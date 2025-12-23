@@ -46,7 +46,7 @@ function App() {
 
     switch (value) {
       case 0:
-        return <Home members={members} transactions={transactions} />;
+        return <Home members={members} transactions={transactions} refreshData={refreshData} />;
       case 1:
         return (
           <AddTransaction
