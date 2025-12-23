@@ -15,6 +15,7 @@ import { postData } from '../api/gasClient';
 const Settings = ({ members, onUpdate }) => {
   const [newName, setNewName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -24,7 +25,11 @@ const Settings = ({ members, onUpdate }) => {
   const [editName, setEditName] = useState('');
 
   const handleAddMember = async () => {
-    if (!newName.trim()) return;
+    if (!newName.trim()) {
+      setError(true);
+      return;
+    }
+    setError(false);
     setLoading(true);
 
     const payload = {
@@ -108,7 +113,12 @@ const Settings = ({ members, onUpdate }) => {
             label="名前"
             placeholder="メンバー名を入力"
             value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            error={error}
+            helperText={error ? "このフィールドに値を入力してください" : ""}
+            onChange={(e) => {
+              setNewName(e.target.value);
+              if (e.target.value.trim()) setError(false);
+            }}
             fullWidth
             variant="filled"
             InputProps={{

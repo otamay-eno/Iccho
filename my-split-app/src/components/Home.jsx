@@ -61,12 +61,14 @@ const Home = ({ members, transactions, refreshData }) => {
   // Handlers
   const handleOpenEdit = (t) => {
     setEditTransaction(t);
+    // YYYY-MM-DD形式に変換 (ISO文字列の場合に対応)
+    const dateStr = t.date.split('T')[0];
     setFormData({
       title: t.title,
       amount: t.amount,
       payer: t.payer,
       for_whom: t.for_whom,
-      date: t.date
+      date: dateStr
     });
   };
 
@@ -214,7 +216,7 @@ const Home = ({ members, transactions, refreshData }) => {
                           {t.title}
                         </Typography>
                         <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.75rem', mr: 4 }}>
-                          {t.date.replace(/-/g, '/')}
+                          {t.date.split('T')[0].replace(/-/g, '/')}
                         </Typography>
                       </Box>
                       <Typography variant="h6" fontWeight="800" color="primary.main" sx={{ mt: 0.5 }}>
