@@ -72,10 +72,10 @@ const Settings = ({ members, onUpdate }) => {
             onClick={handleAddMember}
             disabled={loading || !newName.trim()}
             sx={{
-              borderRadius: 3,
+              borderRadius: 4,
               px: 3,
               minWidth: 80,
-              boxShadow: '0 4px 10px 0 rgba(0, 32, 91, 0.2)'
+              boxShadow: '0 4px 14px 0 rgba(0, 32, 91, 0.3)'
             }}
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : '追加'}
