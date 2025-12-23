@@ -213,19 +213,11 @@ const Home = ({ members, transactions, refreshData }) => {
                   }
                   secondary={
                     <Box mt={1}>
-                      <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                        <Chip
-                          size="small"
-                          label={`支払: ${t.payer}`}
-                          icon={<PersonIcon style={{ fontSize: 14 }} />}
-                          sx={{ borderRadius: 1, backgroundColor: 'rgba(0, 32, 91, 0.05)', color: 'text.secondary' }}
-                        />
-                        <Typography variant="caption" color="text.disabled">
-                          {t.date.replace(/-/g, '/')}
-                        </Typography>
-                      </Box>
-                      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
-                        対象: {t.for_whom.join(', ')}
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        （{t.date.replace(/-/g, '/')}）（{t.payer}）が支払った
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        対象：{t.for_whom.join(', ')}
                       </Typography>
                     </Box>
                   }
