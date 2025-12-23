@@ -25,6 +25,7 @@ const Home = ({ members, transactions, refreshData }) => {
     date: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // 収支計算ロジック
   const calculateBalances = () => {
@@ -92,6 +93,7 @@ const Home = ({ members, transactions, refreshData }) => {
   const handleDeleteTransaction = async () => {
     if (!deleteTransactionId) return;
 
+    setIsDeleting(true);
     try {
       await postData('deleteTransaction', { id: deleteTransactionId });
       if (refreshData) refreshData();
@@ -100,6 +102,8 @@ const Home = ({ members, transactions, refreshData }) => {
     } catch (e) {
       console.error(e);
       alert('削除に失敗しました');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -326,7 +330,15 @@ const Home = ({ members, transactions, refreshData }) => {
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
           <Button onClick={() => setDeleteTransactionId(null)} sx={{ color: 'text.secondary' }}>キャンセル</Button>
-          <Button onClick={handleDeleteTransaction} variant="contained" color="error" sx={{ borderRadius: 2, boxShadow: 'none' }}>削除</Button>
+          <Button
+            onClick={handleDeleteTransaction}
+            variant="contained"
+            color="error"
+            disabled={isDeleting}
+            sx={{ borderRadius: 2, boxShadow: 'none' }}
+          >
+            {isDeleting ? <CircularProgress size={24} color="inherit" /> : '削除'}
+          </Button>
         </DialogActions>
       </Dialog>
 

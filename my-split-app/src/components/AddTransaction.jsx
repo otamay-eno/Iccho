@@ -233,9 +233,8 @@ const AddTransaction = ({ members, onComplete }) => {
           mt: 2,
           boxShadow: '0 4px 14px 0 rgba(0, 32, 91, 0.3)'
         }}
-        startIcon={isSubmitting ? <CircularProgress size={24} color="inherit" /> : null}
       >
-        {isSubmitting ? '送信中...' : '登録する'}
+        {isSubmitting ? <CircularProgress size={24} color="inherit" /> : '登録する'}
       </Button>
 
     </Box>

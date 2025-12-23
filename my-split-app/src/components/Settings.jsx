@@ -15,6 +15,8 @@ import { postData } from '../api/gasClient';
 const Settings = ({ members, onUpdate }) => {
   const [newName, setNewName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Edit/Delete State
   const [editMember, setEditMember] = useState(null); // Member object being edited
@@ -51,6 +53,7 @@ const Settings = ({ members, onUpdate }) => {
   const handleUpdateMember = async () => {
     if (!editName.trim() || !editMember) return;
 
+    setIsEditing(true);
     try {
       await postData('updateMember', { id: editMember.id, name: editName });
       onUpdate();
@@ -58,6 +61,8 @@ const Settings = ({ members, onUpdate }) => {
     } catch (e) {
       console.error(e);
       alert('更新に失敗しました');
+    } finally {
+      setIsEditing(false);
     }
   };
 
@@ -65,6 +70,7 @@ const Settings = ({ members, onUpdate }) => {
   const handleDeleteMember = async () => {
     if (!deleteMemberId) return;
 
+    setIsDeleting(true);
     try {
       await postData('deleteMember', { id: deleteMemberId });
       onUpdate();
@@ -72,6 +78,8 @@ const Settings = ({ members, onUpdate }) => {
     } catch (e) {
       console.error(e);
       alert('削除に失敗しました');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -112,7 +120,7 @@ const Settings = ({ members, onUpdate }) => {
           <Button
             variant="contained"
             onClick={handleAddMember}
-            disabled={loading || !newName.trim()}
+            disabled={loading}
             sx={{
               borderRadius: 4,
               px: 3,
@@ -196,7 +204,14 @@ const Settings = ({ members, onUpdate }) => {
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
           <Button onClick={() => setEditMember(null)} sx={{ color: 'text.secondary' }}>キャンセル</Button>
-          <Button onClick={handleUpdateMember} variant="contained" disabled={!editName.trim()} sx={{ borderRadius: 2, boxShadow: 'none' }}>更新</Button>
+          <Button
+            onClick={handleUpdateMember}
+            variant="contained"
+            disabled={isEditing}
+            sx={{ borderRadius: 2, boxShadow: 'none' }}
+          >
+            {isEditing ? <CircularProgress size={24} color="inherit" /> : '更新'}
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -209,7 +224,15 @@ const Settings = ({ members, onUpdate }) => {
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
           <Button onClick={() => setDeleteMemberId(null)} sx={{ color: 'text.secondary' }}>キャンセル</Button>
-          <Button onClick={handleDeleteMember} variant="contained" color="error" sx={{ borderRadius: 2, boxShadow: 'none' }}>削除</Button>
+          <Button
+            onClick={handleDeleteMember}
+            variant="contained"
+            color="error"
+            disabled={isDeleting}
+            sx={{ borderRadius: 2, boxShadow: 'none' }}
+          >
+            {isDeleting ? <CircularProgress size={24} color="inherit" /> : '削除'}
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
