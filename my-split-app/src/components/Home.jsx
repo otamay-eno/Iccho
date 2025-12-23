@@ -190,7 +190,7 @@ const Home = ({ members, transactions, refreshData }) => {
             >
               <ListItem
                 alignItems="flex-start"
-                sx={{ px: 2, py: 2 }}
+                sx={{ px: 2, py: 2, display: 'flex', gap: 2 }}
                 secondaryAction={
                   <Box display="flex" flexDirection="column" gap={0}>
                     <IconButton size="small" onClick={() => handleOpenEdit(t)} sx={{ color: 'primary.light' }}>
@@ -202,25 +202,57 @@ const Home = ({ members, transactions, refreshData }) => {
                   </Box>
                 }
               >
+                {/* Date Box */}
+                <Box sx={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                  minWidth: 50, height: 50, borderRadius: 2,
+                  bgcolor: 'rgba(0, 32, 91, 0.05)', color: 'primary.main',
+                  fontWeight: 'bold', flexShrink: 0
+                }}>
+                  <Typography variant="caption" sx={{ lineHeight: 1, fontSize: '0.7rem' }}>
+                    {t.date.split('-')[1]}
+                  </Typography>
+                  <Typography variant="h6" sx={{ lineHeight: 1, fontWeight: '800' }}>
+                    {t.date.split('-')[2]}
+                  </Typography>
+                </Box>
+
                 <ListItemText
                   primary={
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5} pr={4}>
-                      <Typography variant="subtitle1" fontWeight="700" color="primary.main">{t.title}</Typography>
-                      <Typography variant="h6" fontWeight="700" color="primary.main">
+                    <Box mb={0.5}>
+                      <Typography variant="subtitle1" fontWeight="700" color="text.primary" sx={{ lineHeight: 1.2 }}>
+                        {t.title}
+                      </Typography>
+                      <Typography variant="h6" fontWeight="800" color="primary.main" sx={{ mt: 0.5 }}>
                         ¥{Number(t.amount).toLocaleString()}
                       </Typography>
                     </Box>
                   }
                   secondary={
-                    <Box mt={1}>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-                        （{t.date.replace(/-/g, '/')}）（{t.payer}）が支払った
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        対象：{t.for_whom.join(', ')}
-                      </Typography>
+                    <Box mt={1} display="flex" flexDirection="column" gap={0.5}>
+                      <Box display="flex" alignItems="center" gap={1}>
+                        <Chip
+                          size="small"
+                          label={t.payer}
+                          avatar={<Avatar sx={{ bgcolor: 'primary.main', color: 'white', width: 20, height: 20, fontSize: '0.7rem' }}>{t.payer[0]}</Avatar>}
+                          sx={{ height: 24, fontSize: '0.75rem', fontWeight: 600, bgcolor: 'transparent', border: '1px solid #e0e0e0' }}
+                        />
+                        <Typography variant="caption" color="text.secondary">が支払いました</Typography>
+                      </Box>
+                      <Box display="flex" flexWrap="wrap" gap={0.5} alignItems="center">
+                        <Typography variant="caption" color="text.secondary" sx={{ mr: 0.5 }}>対象:</Typography>
+                        {t.for_whom.map(target => (
+                          <Chip
+                            key={target}
+                            size="small"
+                            label={target}
+                            sx={{ height: 20, fontSize: '0.7rem', bgcolor: 'rgba(0, 163, 224, 0.1)', color: '#0074AE' }}
+                          />
+                        ))}
+                      </Box>
                     </Box>
                   }
+                  sx={{ my: 0 }}
                 />
               </ListItem>
             </Paper>
