@@ -190,7 +190,7 @@ const Home = ({ members, transactions, refreshData }) => {
             >
               <ListItem
                 alignItems="flex-start"
-                sx={{ px: 2, py: 2, display: 'flex', gap: 2 }}
+                sx={{ px: 2, py: 2 }}
                 secondaryAction={
                   <Box display="flex" flexDirection="column" gap={0}>
                     <IconButton size="small" onClick={() => handleOpenEdit(t)} sx={{ color: 'primary.light' }}>
@@ -202,27 +202,17 @@ const Home = ({ members, transactions, refreshData }) => {
                   </Box>
                 }
               >
-                {/* Date Box */}
-                <Box sx={{
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  minWidth: 50, height: 50, borderRadius: 2,
-                  bgcolor: 'rgba(0, 32, 91, 0.05)', color: 'primary.main',
-                  fontWeight: 'bold', flexShrink: 0
-                }}>
-                  <Typography variant="caption" sx={{ lineHeight: 1, fontSize: '0.7rem' }}>
-                    {t.date.split('-')[1]}
-                  </Typography>
-                  <Typography variant="h6" sx={{ lineHeight: 1, fontWeight: '800' }}>
-                    {t.date.split('-')[2]}
-                  </Typography>
-                </Box>
-
                 <ListItemText
                   primary={
                     <Box mb={0.5}>
-                      <Typography variant="subtitle1" fontWeight="700" color="text.primary" sx={{ lineHeight: 1.2 }}>
-                        {t.title}
-                      </Typography>
+                      <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+                        <Typography variant="subtitle1" fontWeight="700" color="text.primary" sx={{ lineHeight: 1.2 }}>
+                          {t.title}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.75rem', mr: 4 }}>
+                          {t.date.replace(/-/g, '/')}
+                        </Typography>
+                      </Box>
                       <Typography variant="h6" fontWeight="800" color="primary.main" sx={{ mt: 0.5 }}>
                         ¥{Number(t.amount).toLocaleString()}
                       </Typography>
