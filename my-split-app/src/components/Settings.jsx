@@ -36,12 +36,21 @@ const Settings = ({ members, onUpdate }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      <Typography variant="h5" fontWeight="800" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Typography variant="h5" fontWeight="800" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'primary.main' }}>
         <SettingsIcon /> 設定
       </Typography>
 
-      <Paper sx={{ p: 3, borderRadius: 3, background: 'rgba(255,255,255,0.05)' }}>
-        <Typography variant="subtitle1" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+          borderRadius: 3,
+          background: '#ffffff',
+          border: '1px solid #E0E0E0',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+        }}
+      >
+        <Typography variant="subtitle1" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, color: 'primary.main' }}>
           <PersonAddIcon color="primary" /> メンバー追加
         </Typography>
         <Box display="flex" gap={1}>
@@ -54,8 +63,9 @@ const Settings = ({ members, onUpdate }) => {
             variant="filled"
             InputProps={{
               disableUnderline: true,
-              style: { borderRadius: 12 }
+              style: { borderRadius: 12, backgroundColor: '#F5F5F5' }
             }}
+            sx={{ '& .MuiFilledInput-root': { backgroundColor: '#F5F5F5' } }}
           />
           <Button
             variant="contained"
@@ -65,7 +75,7 @@ const Settings = ({ members, onUpdate }) => {
               borderRadius: 3,
               px: 3,
               minWidth: 80,
-              boxShadow: '0 4px 10px 0 rgba(0,0,0,0.3)'
+              boxShadow: '0 4px 10px 0 rgba(0, 32, 91, 0.2)'
             }}
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : '追加'}
@@ -74,10 +84,19 @@ const Settings = ({ members, onUpdate }) => {
       </Paper>
 
       <Box>
-        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ px: 1 }}>
+        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ px: 1, color: 'primary.main' }}>
           メンバー一覧 ({members.length})
         </Typography>
-        <Paper sx={{ borderRadius: 3, overflow: 'hidden', background: 'rgba(30,30,30,0.6)', backdropFilter: 'blur(10px)' }}>
+        <Paper
+          elevation={0}
+          sx={{
+            borderRadius: 3,
+            overflow: 'hidden',
+            background: '#ffffff',
+            border: '1px solid #E0E0E0',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+          }}
+        >
           <List sx={{ p: 0 }}>
             {members.length === 0 && (
               <ListItem>
@@ -88,16 +107,16 @@ const Settings = ({ members, onUpdate }) => {
               <React.Fragment key={m.id}>
                 <ListItem sx={{ py: 2 }}>
                   <ListItemAvatar>
-                    <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                    <Avatar sx={{ bgcolor: 'secondary.light', color: 'primary.main' }}>
                       <PersonIcon />
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
                     primary={m.name}
-                    primaryTypographyProps={{ fontWeight: 500 }}
+                    primaryTypographyProps={{ fontWeight: 600, color: 'text.primary' }}
                   />
                 </ListItem>
-                {index < members.length - 1 && <Divider component="li" variant="inset" />}
+                {index < members.length - 1 && <Divider component="li" variant="fullWidth" sx={{ opacity: 0.5 }} />}
               </React.Fragment>
             ))}
           </List>

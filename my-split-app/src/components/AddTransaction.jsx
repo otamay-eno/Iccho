@@ -66,11 +66,20 @@ const AddTransaction = ({ members, onComplete }) => {
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3, pb: 2 }}>
 
-      <Typography variant="h5" fontWeight="800" gutterBottom>
+      <Typography variant="h5" fontWeight="800" gutterBottom color="primary.main">
         新規取引
       </Typography>
 
-      <Paper sx={{ p: 2, borderRadius: 3, background: 'rgba(255,255,255,0.05)' }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          borderRadius: 3,
+          background: '#ffffff',
+          border: '1px solid #E0E0E0',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+        }}
+      >
         <Stack spacing={3}>
           <TextField
             label="日付"
@@ -88,8 +97,9 @@ const AddTransaction = ({ members, onComplete }) => {
                 </InputAdornment>
               ),
               disableUnderline: true,
-              style: { borderRadius: 12 }
+              style: { borderRadius: 12, backgroundColor: '#F5F5F5' }
             }}
+            sx={{ '& .MuiFilledInput-root': { backgroundColor: '#F5F5F5' } }}
           />
 
           <TextField
@@ -108,8 +118,9 @@ const AddTransaction = ({ members, onComplete }) => {
                 </InputAdornment>
               ),
               disableUnderline: true,
-              style: { borderRadius: 12 }
+              style: { borderRadius: 12, backgroundColor: '#F5F5F5' }
             }}
+            sx={{ '& .MuiFilledInput-root': { backgroundColor: '#F5F5F5' } }}
           />
 
           <TextField
@@ -125,25 +136,35 @@ const AddTransaction = ({ members, onComplete }) => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <Typography variant="h6" fontWeight="bold">¥</Typography>
+                  <Typography variant="h6" fontWeight="bold" color="primary.main">¥</Typography>
                 </InputAdornment>
               ),
               disableUnderline: true,
-              style: { fontSize: '1.2rem', fontWeight: 'bold', borderRadius: 12 }
+              style: { fontSize: '1.2rem', fontWeight: 'bold', borderRadius: 12, backgroundColor: '#F5F5F5' }
             }}
+            sx={{ '& .MuiFilledInput-root': { backgroundColor: '#F5F5F5' } }}
           />
         </Stack>
       </Paper>
 
-      <Paper sx={{ p: 2, borderRadius: 3, background: 'rgba(255,255,255,0.05)' }}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          borderRadius: 3,
+          background: '#ffffff',
+          border: '1px solid #E0E0E0',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+        }}
+      >
+        <Typography variant="subtitle2" color="primary.main" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <PaidIcon fontSize="small" /> 支払った人
         </Typography>
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
           {members.map(m => (
             <Chip
               key={m.id}
-              avatar={<Avatar>{m.name[0]}</Avatar>}
+              avatar={<Avatar sx={{ bgcolor: formData.payer === m.name ? 'primary.dark' : 'grey.300' }}>{m.name[0]}</Avatar>}
               label={m.name}
               onClick={() => handlePayerChange(m.name)}
               color={formData.payer === m.name ? "primary" : "default"}
@@ -154,15 +175,25 @@ const AddTransaction = ({ members, onComplete }) => {
                 borderRadius: 20,
                 borderWidth: formData.payer === m.name ? 0 : 1,
                 fontSize: '1rem',
-                p: 0.5
+                p: 0.5,
+                borderColor: '#cfd8dc'
               }}
             />
           ))}
         </Stack>
       </Paper>
 
-      <Paper sx={{ p: 2, borderRadius: 3, background: 'rgba(255,255,255,0.05)' }}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          borderRadius: 3,
+          background: '#ffffff',
+          border: '1px solid #E0E0E0',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+        }}
+      >
+        <Typography variant="subtitle2" color="primary.main" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <PersonIcon fontSize="small" /> 対象者 (割り勘する人)
         </Typography>
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
@@ -180,6 +211,7 @@ const AddTransaction = ({ members, onComplete }) => {
                   height: 36,
                   borderRadius: 18,
                   borderWidth: isSelected ? 0 : 1,
+                  borderColor: '#cfd8dc',
                   opacity: isSelected ? 1 : 0.7
                 }}
               />
@@ -199,7 +231,7 @@ const AddTransaction = ({ members, onComplete }) => {
           fontSize: '1.1rem',
           borderRadius: 4,
           mt: 2,
-          boxShadow: '0 4px 14px 0 rgba(124, 77, 255, 0.39)'
+          boxShadow: '0 4px 14px 0 rgba(0, 32, 91, 0.3)'
         }}
         startIcon={isSubmitting ? <CircularProgress size={24} color="inherit" /> : null}
       >

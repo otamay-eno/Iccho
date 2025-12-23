@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  AppBar, Toolbar, Typography, Box, BottomNavigation, BottomNavigationAction,
+  Typography, Box, BottomNavigation, BottomNavigationAction,
   Container, CircularProgress, CssBaseline, ThemeProvider, Paper, GlobalStyles
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/HomeRounded';
@@ -70,21 +70,25 @@ function App() {
       <GlobalStyles styles={{
         body: { overflowX: 'hidden' }
       }} />
-      <Box sx={{ pb: 8, minHeight: '100vh', position: 'relative' }}>
-        <AppBar position="sticky" color="transparent" elevation={0} sx={{ top: 0 }}>
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 800, letterSpacing: '-0.5px' }}>
-              Iccho 割り勘
-            </Typography>
-          </Toolbar>
-        </AppBar>
+      <Box sx={{ pb: 8, pt: 2, minHeight: '100vh', position: 'relative' }}>
+        {/* Header Removed as requested */}
 
-        <Container maxWidth="md" sx={{ mt: 2, mb: 4, px: 2 }}>
+        <Container maxWidth="md" sx={{ mt: 0, mb: 12, px: 2 }}>
           {renderScreen()}
         </Container>
 
         <Paper
-          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000, borderRadius: 0 }}
+          sx={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            borderTopLeftRadius: 24,
+            borderTopRightRadius: 24,
+            overflow: 'hidden',
+            boxShadow: '0 -4px 20px rgba(0,0,0,0.1)'
+          }}
           elevation={10}
         >
           <BottomNavigation
@@ -92,13 +96,18 @@ function App() {
             value={value}
             onChange={(event, newValue) => setValue(newValue)}
             sx={{
-              height: 70,
-              pb: 1, // Add some padding for safe area logic roughly
-              '& .Mui-selected': { color: 'secondary.main' }
+              height: 80,
+              pb: 2,
+              '& .Mui-selected': {
+                color: 'primary.main',
+                '& .MuiSvgIcon-root': {
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 32, 91, 0.3))'
+                }
+              }
             }}
           >
             <BottomNavigationAction label="ホーム" icon={<HomeIcon />} />
-            <BottomNavigationAction label="登録" icon={<AddCircleIcon sx={{ fontSize: 32 }} />} />
+            <BottomNavigationAction label="登録" icon={<AddCircleIcon sx={{ fontSize: 36 }} />} />
             <BottomNavigationAction label="設定" icon={<SettingsIcon />} />
           </BottomNavigation>
         </Paper>

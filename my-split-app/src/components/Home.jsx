@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, List, ListItem, ListItemText, Divider, Grid, Chip, Box, Paper, Avatar } from '@mui/material';
+import { Typography, List, ListItem, ListItemText, Grid, Chip, Box, Paper } from '@mui/material';
 import PaidIcon from '@mui/icons-material/PaidRounded';
 import ReceiptIcon from '@mui/icons-material/ReceiptLongRounded';
 import PersonIcon from '@mui/icons-material/PersonRounded';
@@ -40,7 +40,7 @@ const Home = ({ members, transactions }) => {
     <Box sx={{ width: '100%' }}>
       {/* 収支サマリー */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'primary.main' }}>
           <PaidIcon color="primary" /> 収支状況
         </Typography>
         <Grid container spacing={2}>
@@ -50,28 +50,26 @@ const Home = ({ members, transactions }) => {
             return (
               <Grid item xs={6} key={member.id}>
                 <Paper
-                  elevation={0}
+                  elevation={2}
                   sx={{
                     p: 2,
                     borderRadius: 3,
-                    background: isPlus
-                      ? 'linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(33, 150, 243, 0.05) 100%)'
-                      : 'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(244, 67, 54, 0.05) 100%)',
-                    border: `1px solid ${isPlus ? 'rgba(33, 150, 243, 0.2)' : 'rgba(244, 67, 54, 0.2)'}`,
+                    background: '#ffffff',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    borderLeft: isPlus ? '6px solid #00A3E0' : '6px solid #B0B0B0', // Cyan for plus, Grey for minus (ANA style subtle)
                     transition: 'transform 0.2s',
                     '&:active': { transform: 'scale(0.98)' }
                   }}
                 >
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                  <Typography variant="body2" color="text.secondary" gutterBottom fontWeight="600">
                     {member.name}
                   </Typography>
                   <Typography
                     variant="h5"
                     sx={{
-                      color: isPlus ? '#4dabf5' : '#f44336',
+                      color: isPlus ? '#00A3E0' : '#666',
                       fontWeight: 800,
                       my: 0.5
                     }}
@@ -81,15 +79,12 @@ const Home = ({ members, transactions }) => {
                   <Chip
                     label={isPlus ? '受取' : '支払'}
                     size="small"
-                    color={isPlus ? 'primary' : 'error'}
-                    variant="soft" // Note: variant="soft" might need custom theme support or fallback to filled
                     sx={{
                       height: 20,
                       fontSize: '0.7rem',
-                      opacity: 0.9,
                       fontWeight: 'bold',
-                      backgroundColor: isPlus ? 'rgba(33, 150, 243, 0.2)' : 'rgba(244, 67, 54, 0.2)',
-                      color: isPlus ? '#90caf9' : '#ef5350'
+                      backgroundColor: isPlus ? 'rgba(0, 163, 224, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                      color: isPlus ? '#0074AE' : '#666'
                     }}
                   />
                 </Paper>
@@ -101,31 +96,32 @@ const Home = ({ members, transactions }) => {
 
       {/* 取引履歴 */}
       <Box>
-        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'primary.main' }}>
           <ReceiptIcon color="secondary" /> 最近の履歴
         </Typography>
         <List sx={{ width: '100%', p: 0 }}>
           {transactions.length === 0 && (
-            <Paper sx={{ p: 4, textAlign: 'center', bgcolor: 'transparent', border: '1px dashed rgba(255,255,255,0.2)' }}>
+            <Paper sx={{ p: 4, textAlign: 'center', bgcolor: 'transparent', border: '1px dashed rgba(0,0,0,0.1)' }}>
               <Typography color="text.secondary">履歴がありません</Typography>
             </Paper>
           )}
-          {transactions.map((t, index) => (
+          {transactions.map((t) => (
             <Paper
               key={t.id}
+              elevation={1}
               sx={{
                 mb: 1.5,
                 overflow: 'hidden',
-                backgroundColor: 'rgba(30, 30, 30, 0.6)',
-                backdropFilter: 'blur(10px)',
+                backgroundColor: '#ffffff',
+                border: '1px solid rgba(0,0,0,0.03)'
               }}
             >
-              <ListItem alignItems="flex-start" sx={{ px: 2, py: 1.5 }}>
+              <ListItem alignItems="flex-start" sx={{ px: 2, py: 2 }}>
                 <ListItemText
                   primary={
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
-                      <Typography variant="subtitle1" fontWeight="600">{t.title}</Typography>
-                      <Typography variant="h6" fontWeight="700" color="primary.light">
+                      <Typography variant="subtitle1" fontWeight="700" color="primary.main">{t.title}</Typography>
+                      <Typography variant="h6" fontWeight="700" color="primary.main">
                         ¥{Number(t.amount).toLocaleString()}
                       </Typography>
                     </Box>
@@ -137,7 +133,7 @@ const Home = ({ members, transactions }) => {
                           size="small"
                           label={`支払: ${t.payer}`}
                           icon={<PersonIcon style={{ fontSize: 14 }} />}
-                          sx={{ borderRadius: 1, backgroundColor: 'rgba(255,255,255,0.05)', color: 'text.secondary' }}
+                          sx={{ borderRadius: 1, backgroundColor: 'rgba(0, 32, 91, 0.05)', color: 'text.secondary' }}
                         />
                         <Typography variant="caption" color="text.disabled">
                           {t.date.replace(/-/g, '/')}
