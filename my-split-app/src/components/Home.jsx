@@ -1,5 +1,8 @@
 import React from 'react';
-import { Card, CardContent, Typography, List, ListItem, ListItemText, Divider, Grid, Chip, Box } from '@mui/material';
+import { Card, CardContent, Typography, List, ListItem, ListItemText, Divider, Grid, Chip, Box, Paper, Avatar } from '@mui/material';
+import PaidIcon from '@mui/icons-material/PaidRounded';
+import ReceiptIcon from '@mui/icons-material/ReceiptLongRounded';
+import PersonIcon from '@mui/icons-material/PersonRounded';
 
 const Home = ({ members, transactions }) => {
   // 収支計算ロジック
@@ -34,70 +37,123 @@ const Home = ({ members, transactions }) => {
   const balances = calculateBalances();
 
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       {/* 収支サマリー */}
-      <Typography variant="h6" gutterBottom>現在の収支状況</Typography>
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        {members.map((member) => {
-          const bal = balances[member.name] || 0;
-          const isPlus = bal >= 0;
-          return (
-            <Grid item xs={6} key={member.id}>
-              <Card sx={{ borderLeft: `5px solid ${isPlus ? '#2196f3' : '#f44336'}` }}>
-                <CardContent>
-                  <Typography variant="subtitle1">{member.name}</Typography>
-                  <Typography 
-                    variant="h5" 
-                    color={isPlus ? 'primary' : 'error'}
-                    fontWeight="bold"
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <PaidIcon color="primary" /> 収支状況
+        </Typography>
+        <Grid container spacing={2}>
+          {members.map((member) => {
+            const bal = balances[member.name] || 0;
+            const isPlus = bal >= 0;
+            return (
+              <Grid item xs={6} key={member.id}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 2,
+                    borderRadius: 3,
+                    background: isPlus
+                      ? 'linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(33, 150, 243, 0.05) 100%)'
+                      : 'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(244, 67, 54, 0.05) 100%)',
+                    border: `1px solid ${isPlus ? 'rgba(33, 150, 243, 0.2)' : 'rgba(244, 67, 54, 0.2)'}`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    transition: 'transform 0.2s',
+                    '&:active': { transform: 'scale(0.98)' }
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    {member.name}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: isPlus ? '#4dabf5' : '#f44336',
+                      fontWeight: 800,
+                      my: 0.5
+                    }}
                   >
-                    {isPlus ? '+' : ''}{Math.round(bal).toLocaleString()}円
+                    {isPlus ? '+' : ''}{Math.round(bal).toLocaleString()}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {isPlus ? '受取予定' : '支払予定'}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+                  <Chip
+                    label={isPlus ? '受取' : '支払'}
+                    size="small"
+                    color={isPlus ? 'primary' : 'error'}
+                    variant="soft" // Note: variant="soft" might need custom theme support or fallback to filled
+                    sx={{
+                      height: 20,
+                      fontSize: '0.7rem',
+                      opacity: 0.9,
+                      fontWeight: 'bold',
+                      backgroundColor: isPlus ? 'rgba(33, 150, 243, 0.2)' : 'rgba(244, 67, 54, 0.2)',
+                      color: isPlus ? '#90caf9' : '#ef5350'
+                    }}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
 
       {/* 取引履歴 */}
-      <Typography variant="h6" gutterBottom>最近の履歴</Typography>
-      <Card>
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <Box>
+        <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <ReceiptIcon color="secondary" /> 最近の履歴
+        </Typography>
+        <List sx={{ width: '100%', p: 0 }}>
           {transactions.length === 0 && (
-            <ListItem><ListItemText primary="履歴がありません" /></ListItem>
+            <Paper sx={{ p: 4, textAlign: 'center', bgcolor: 'transparent', border: '1px dashed rgba(255,255,255,0.2)' }}>
+              <Typography color="text.secondary">履歴がありません</Typography>
+            </Paper>
           )}
           {transactions.map((t, index) => (
-            <React.Fragment key={t.id}>
-              <ListItem alignItems="flex-start">
+            <Paper
+              key={t.id}
+              sx={{
+                mb: 1.5,
+                overflow: 'hidden',
+                backgroundColor: 'rgba(30, 30, 30, 0.6)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <ListItem alignItems="flex-start" sx={{ px: 2, py: 1.5 }}>
                 <ListItemText
                   primary={
-                    <Box display="flex" justifyContent="space-between">
-                      <Typography variant="subtitle1" fontWeight="bold">{t.title}</Typography>
-                      <Typography variant="subtitle1">{t.amount.toLocaleString()}円</Typography>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+                      <Typography variant="subtitle1" fontWeight="600">{t.title}</Typography>
+                      <Typography variant="h6" fontWeight="700" color="primary.light">
+                        ¥{Number(t.amount).toLocaleString()}
+                      </Typography>
                     </Box>
                   }
                   secondary={
-                    <React.Fragment>
-                      <Typography component="span" variant="body2" color="text.primary">
-                        {t.payer} が支払い
+                    <Box mt={1}>
+                      <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+                        <Chip
+                          size="small"
+                          label={`支払: ${t.payer}`}
+                          icon={<PersonIcon style={{ fontSize: 14 }} />}
+                          sx={{ borderRadius: 1, backgroundColor: 'rgba(255,255,255,0.05)', color: 'text.secondary' }}
+                        />
+                        <Typography variant="caption" color="text.disabled">
+                          {t.date.replace(/-/g, '/')}
+                        </Typography>
+                      </Box>
+                      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+                        対象: {t.for_whom.join(', ')}
                       </Typography>
-                      <br />
-                      <Typography component="span" variant="caption">
-                        {t.date} | 対象: {t.for_whom.join(', ')}
-                      </Typography>
-                    </React.Fragment>
+                    </Box>
                   }
                 />
               </ListItem>
-              {index < transactions.length - 1 && <Divider component="li" />}
-            </React.Fragment>
+            </Paper>
           ))}
         </List>
-      </Card>
+      </Box>
     </Box>
   );
 };
