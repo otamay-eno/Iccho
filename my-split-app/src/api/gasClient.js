@@ -1,4 +1,4 @@
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx836Y8P0_6_-DqvwHl9XlybRo-fzccGo_M3jNni4UJvOMneN7-VGA7MWfGV4lYejJW/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbySSsAKoefr-EW9XYEoDS3VjPiOsnc48cektwA5zyY1Blu0xCKDaGbTEcgXtCNJB7Y/exec';
 
 export const fetchAllData = async () => {
   const response = await fetch(`${GAS_API_URL}?action=getData`);
@@ -12,7 +12,7 @@ export const postData = async (action, payload) => {
     method: 'POST',
     mode: 'cors', // 重要
     headers: {
-      'Content-Type': 'text/plain', 
+      'Content-Type': 'text/plain',
     },
     body: JSON.stringify({ action, payload }),
   });
